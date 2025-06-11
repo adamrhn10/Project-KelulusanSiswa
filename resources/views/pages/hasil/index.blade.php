@@ -1,9 +1,9 @@
 @extends('layouts.master')
 
-@section('title', 'Analytics')
+@section('title', 'Hasil Prediksi')
 
 @section('content')
 <div class="page-category">
-  Halaman pengaturan.
+ Hasilnya adalah
 </div>
 @endsection

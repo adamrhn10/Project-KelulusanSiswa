@@ -1,9 +1,9 @@
 @extends('layouts.master')
 
-@section('title', 'Settings')
+@section('title', 'Data Nilai Kriteria')
 
 @section('content')
 <div class="page-category">
-  Halaman pengaturan.
+ coba anjg
 </div>
 @endsection

@@ -3,7 +3,7 @@
     <div class="sidebar-logo">
       <!-- Logo Header -->
       <div class="logo-header" data-background-color="dark">
-        <a href="{{ url('/dashboard') }}" class="logo text-white text-decoration-none fw-bold fs-5">
+        <a href="{{ url('') }}" class="logo text-white text-decoration-none fw-bold fs-5">
           LulusApp
         </a>
         <div class="nav-toggle">
@@ -27,18 +27,24 @@
                 <span class="sidebar-mini-icon">
                   <i class="fa fa-ellipsis-h"></i>
                 </span>
-                <h4 class="text-section">Components</h4>
+                <h4 class="text-section">Manajemen Data</h4>
               </li>
-              <li class="nav-item {{ request()->is('analytics') ? 'active' : '' }}">
-                <a href="{{ route('analytics') }}">
-                  <i class="fas fa-chart-line"></i>
-                  <p>Analytics</p>
+              <li class="nav-item {{ request()->is('siswa') ? 'active' : '' }}">
+                <a href="{{ route('siswa') }}">
+                  <i class="fas fa-user-graduate"></i>
+                  <p>Data Siswa</p>
                 </a>
               </li>
-              <li class="nav-item {{ request()->is('settings') ? 'active' : '' }}">
-                <a href="{{ route('settings') }}">
-                  <i class="fas fa-cog"></i>
-                  <p>Settings</p>
+              <li class="nav-item {{ request()->is('nilai') ? 'active' : '' }}">
+                <a href="{{ route('nilai') }}">
+                  <i class="fas fa-clipboard-list"></i>
+                  <p>Data Nilai Kriteria</p>
+                </a>
+              </li>
+              <li class="nav-item {{ request()->is('hasil') ? 'active' : '' }}">
+                <a href="{{ route('hasil') }}">
+                  <i class="fas fa-flask"></i>
+                  <p>Hasil Prediksi</p>
                 </a>
               </li>
           {{-- Tambahkan menu lainnya di sini --}}

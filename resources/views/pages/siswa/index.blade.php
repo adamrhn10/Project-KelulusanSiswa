@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Dashboard')
+@section('title', 'Data Siswa')
 
 @section('content')
 <div class="page-category">

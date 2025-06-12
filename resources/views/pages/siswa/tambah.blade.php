@@ -1,6 +1,6 @@
-@extends('layouts.master') {{-- Pastikan ini mengarah ke layout master Anda --}}
+@extends('layouts.master')
 
-@section('title', 'Data Siswa') {{-- Judul halaman --}}
+@section('title', 'Tambah Data Siswa')
 
 @section('content')
 
@@ -10,16 +10,15 @@
             <div class="card-header">
                 <div class="d-flex align-items-center">
                     <h4 class="card-title">Tambah Data Siswa</h4>
-                    <a href="" class="btn btn-primary btn-round ms-auto">
+                    <a href="{{ route('siswa.index') }}" class="btn btn-primary btn-round ms-auto">
                         <i class="fas fa-arrow-left"></i>
                         Kembali
                     </a>
                 </div>
             </div>
             <div class="card-body">
-                <form action="" method="POST">
-                    @csrf {{-- Token CSRF untuk keamanan Laravel --}}
-
+                <form action="/siswa" method="POST">
+                    @csrf
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
@@ -50,7 +49,6 @@
                                     <option value="X" {{ old('kelas') == 'X' ? 'selected' : '' }}>X</option>
                                     <option value="XI" {{ old('kelas') == 'XI' ? 'selected' : '' }}>XI</option>
                                     <option value="XII" {{ old('kelas') == 'XII' ? 'selected' : '' }}>XII</option>
-                                    {{-- Tambahkan pilihan kelas lain jika ada --}}
                                 </select>
                                 @error('kelas')
                                     <small class="text-danger">{{ $message }}</small>
@@ -68,7 +66,7 @@
                         </div>
                     </div>
 
-                    <div class="card-action text-end"> {{-- Tombol di kanan --}}
+                    <div class="card-action text-end">
                         <button type="submit" class="btn btn-success">
                             <i class="fa fa-save"></i> Simpan
                         </button>

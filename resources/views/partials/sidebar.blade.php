@@ -29,20 +29,20 @@
                 </span>
                 <h4 class="text-section">Manajemen Data</h4>
               </li>
-              <li class="nav-item {{ request()->is('siswa') ? 'active' : '' }}">
-                <a href="{{ route('siswa') }}">
+              <li class="nav-item {{ request()->is('siswa.index') ? 'active' : '' }}">
+                <a href="{{ route('siswa.index') }}">
                   <i class="fas fa-user-graduate"></i>
                   <p>Data Siswa</p>
                 </a>
               </li>
-              <li class="nav-item {{ request()->is('nilai') ? 'active' : '' }}">
-                <a href="{{ route('nilai') }}">
+              <li class="nav-item {{ request()->is('nilai.index') ? 'active' : '' }}">
+                <a href="{{ route('nilai.index') }}">
                   <i class="fas fa-clipboard-list"></i>
                   <p>Data Nilai Kriteria</p>
                 </a>
               </li>
-              <li class="nav-item {{ request()->is('hasil') ? 'active' : '' }}">
-                <a href="{{ route('hasil') }}">
+              <li class="nav-item {{ request()->is('hasil.index') ? 'active' : '' }}">
+                <a href="{{ route('hasil.index') }}">
                   <i class="fas fa-flask"></i>
                   <p>Hasil Prediksi</p>
                 </a>

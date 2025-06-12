@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use App\Rules\YearAcademicFormat;
 
 class SiswaController extends Controller
 {
     public function index()
     {
-        return view('pages.siswa.index');
+        $siswa = DB::table('siswa')->get();
+        return view('pages.siswa.index', compact('siswa'));
     }
 
     public function create()
@@ -16,8 +20,107 @@ class SiswaController extends Controller
         return view('pages.siswa.tambah');
     }
 
-    public function update()
+    public function store(Request $request)
     {
-        return view('pages.siswa.edit');
+        $request->validate(
+            [
+                'nisn' => ['required', 'string', 'min:5', 'max:20', 'unique:siswa'],
+                'nama_siswa' => ['required', 'string', 'min:1', 'max:255'],
+                'kelas' => ['required', 'string', 'max:10'],
+                'tahun_ajaran' => [
+                    'required',
+                    'string',
+                    'max:10',
+                    new YearAcademicFormat,
+                ],
+            ],
+            [
+                'required' => 'Inputan :attribute wajib diisi.',
+                'min' => 'Inputan :attribute minimal :min karakter.',
+                'max' => 'Inputan :attribute maksimal :max karakter.',
+                'string' => 'Inputan :attribute harus berupa teks.',
+                'nisn.unique' => 'NISN ini sudah terdaftar.',
+                // 'nisn.string' => 'NISN harus berupa teks.',
+                'nisn.integer' => 'NISN yang Anda masukkan harus berupa angka.',
+            ]
+        );
+
+        $now = Carbon::now();
+
+        DB::table('siswa')->insert([
+            'nisn' => $request->input("nisn"),
+            'nama_siswa' => $request->input("nama_siswa"),
+            'kelas' => $request->input("kelas"),
+            'tahun_ajaran' => $request->input("tahun_ajaran"),
+            'created_at' => $now,
+            'updated_at' => $now
+        ]);
+
+        return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil ditambahkan!');
+    }
+
+    public function edit($id)
+    {
+        $siswa = DB::table('siswa')->where('id', $id)->first(); 
+        if (!$siswa) {
+            abort(404);
+        }
+        return view('pages.siswa.edit', compact('siswa'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate(
+            [
+                'nisn' => [
+                    'required',
+                    'string',
+                    'min:5',
+                    'max:20',
+                    'unique:siswa,nisn,' . $id
+                ],
+                'nama_siswa' => ['required', 'string', 'min:1', 'max:255'],
+                'kelas' => ['required', 'string', 'max:10'],
+                'tahun_ajaran' => [
+                    'required',
+                    'string',
+                    'max:10',
+                    new YearAcademicFormat,
+                ],
+            ],
+            [
+                'required' => 'Inputan :attribute wajib diisi.',
+                'min' => 'Inputan :attribute minimal :min karakter.',
+                'max' => 'Inputan :attribute maksimal :max karakter.',
+                'string' => 'Inputan :attribute harus berupa teks.',
+                'nisn.unique' => 'NISN ini sudah terdaftar.',
+                // 'nisn.string' => 'NISN harus berupa teks.',
+                'nisn.integer' => 'NISN yang Anda masukkan harus berupa angka.',
+            ]
+        );
+
+        $now = Carbon::now();
+        DB::table('siswa')->where('id', $id)->update([
+            'nisn' => $request->input("nisn"),
+            'nama_siswa' => $request->input("nama_siswa"),
+            'kelas' => $request->input("kelas"),
+            'tahun_ajaran' => $request->input("tahun_ajaran"),
+            'updated_at' => $now
+        ]);
+
+        return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil diperbarui!');
+    }
+
+    public function destroy($id)
+    {
+        $siswa = DB::table('siswa')->where('id', $id)->first();
+
+        if (!$siswa) {
+            return redirect()->route('siswa.index')->with('error', 'Data siswa tidak ditemukan!');
+        }
+
+        DB::table('siswa')->where('id', $id)->delete();
+
+        return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil dihapus!');
     }
 }

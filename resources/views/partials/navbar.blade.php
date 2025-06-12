@@ -1,4 +1,3 @@
-<!-- Main Header -->
 <div class="main-header">
     <div class="main-header-logo">
       <div class="logo-header" data-background-color="dark">

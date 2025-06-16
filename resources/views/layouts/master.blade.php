@@ -1,78 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
+    {{-- Head Include --}}
     @include('partials.head')
+
+    {{-- Sidebar Minimize Script --}}
     <script>
-      (function() {
-        if (localStorage.getItem('sidebar_minimized') === 'true') {
-          document.documentElement.classList.add('sidebar_minimize');
-        }
-      })();
+        (function () {
+            if (localStorage.getItem('sidebar_minimized') === 'true') {
+                document.documentElement.classList.add('sidebar_minimize');
+            }
+        })();
     </script>
-  </head>
-  <body>
+
+    {{-- Table Dark Sidebar Styling --}}
+    <style>
+        .table-dark-sidebar thead {
+            background-color: #1B1B3A !important;
+            color: #ffffff;
+        }
+
+        .table-dark-sidebar tbody tr {
+            background-color: #2A2A4A;
+            color: #ffffff;
+        }
+
+        .table-dark-sidebar tbody tr:nth-child(even) {
+            background-color: #33335A;
+        }
+
+        .table-dark-sidebar td,
+        .table-dark-sidebar th,
+        table.dataTable tbody tr {
+            border-color: #444;
+            background-color: #2A2A4A !important;
+        }
+
+        table.dataTable thead th {
+            background-color: #1B1B3A !important;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
     <div class="wrapper">
-      @include('partials.sidebar')
+        {{-- Sidebar --}}
+        @include('partials.sidebar')
 
-      <div class="main-panel">
-        @include('partials.navbar')
+        <div class="main-panel">
+            {{-- Navbar --}}
+            @include('partials.navbar')
 
-        <div class="container">
-          <div class="page-inner">
-            <div class="page-header">
-              <h4 class="page-title">@yield('title', 'Page')</h4>
+            {{-- Page Content --}}
+            <div class="container">
+                <div class="page-inner">
+                    {{-- Page Header --}}
+                    <div class="page-header">
+                        <h4 class="page-title">@yield('title', 'Page')</h4>
 
-              {{-- Bagian Breadcrumbs --}}
-              @if (!request()->routeIs('dashboard'))
-                <ul class="breadcrumbs">
-                  <li class="nav-home">
-                    <a href="{{ route('dashboard') }}"><i class="icon-home"></i></a>
-                  </li>
-                  <li class="separator"><i class="icon-arrow-right"></i></li>
+                        {{-- Breadcrumb (kecuali di dashboard) --}}
+                        @unless (request()->routeIs('dashboard'))
+                            <ul class="breadcrumbs">
+                                <li class="nav-home">
+                                    <a href="{{ route('dashboard') }}">
+                                        <i class="icon-home"></i>
+                                    </a>
+                                </li>
+                                <li class="separator">
+                                    <i class="icon-arrow-right"></i>
+                                </li>
 
-                  <?php
-                    // Ambil nama rute saat ini
-                    $currentRouteName = request()->route()->getName();
-                    $moduleTitle = '';
-                    $moduleRoute = '';
+                                @php
+                                    $route = request()->route()->getName();
+                                    $modules = [
+                                        'siswa' => ['title' => 'Data Siswa', 'route' => 'siswa.index'],
+                                        'nilai' => ['title' => 'Data Nilai', 'route' => 'nilai.index'],
+                                        'hasil' => ['title' => 'Hasil Prediksi', 'route' => 'hasil.index'],
+                                    ];
+                                    $module = collect($modules)->first(function($_, $key) use ($route) {
+                                        return \Illuminate\Support\Str::startsWith($route, $key);
+                                    });
+                                @endphp
 
-                    // Logika untuk menentukan judul modul utama berdasarkan nama rute
-                    // Anda bisa menambahkan lebih banyak kondisi di sini untuk modul lain
-                    if (\Illuminate\Support\Str::startsWith($currentRouteName, 'siswa')) {
-                        $moduleTitle = 'Data Siswa';
-                        $moduleRoute = 'siswa.index';
-                    } elseif (\Illuminate\Support\Str::startsWith($currentRouteName, 'nilai')) {
-                        $moduleTitle = 'Data Nilai';
-                        $moduleRoute = 'nilai.index';
-                    } elseif (\Illuminate\Support\Str::startsWith($currentRouteName, 'hasil')) {
-                        $moduleTitle = 'Hasil Prediksi';
-                        $moduleRoute = 'hasil.index';
-                    }
-                  ?>
+                                @if ($module)
+                                    <li class="nav-item">
+                                        <a href="{{ route($module['route']) }}">{{ $module['title'] }}</a>
+                                    </li>
+                                    <li class="separator">
+                                        <i class="icon-arrow-right"></i>
+                                    </li>
+                                @endif
 
-                  @if ($moduleTitle)
-                    {{-- Breadcrumb untuk modul utama (misal: Data Siswa) --}}
-                    <li class="nav-item">
-                        <a href="{{ route($moduleRoute) }}">{{ $moduleTitle }}</a>
-                    </li>
-                    <li class="separator"><i class="icon-arrow-right"></i></li>
-                  @endif
+                                <li class="nav-item">
+                                    @yield('title', 'Page')
+                                </li>
+                            </ul>
+                        @endunless
+                    </div>
 
-                  {{-- Item breadcrumb terakhir: Judul halaman saat ini --}}
-                  <li class="nav-item">
-                    @yield('title', 'Page')
-                  </li>
-                </ul>
-              @endif
-            </div>            
-            @yield('content')
-          </div>
+                    {{-- Main Content --}}
+                    @yield('content')
+                </div>
+            </div>
+
+            {{-- Footer --}}
+            @include('partials.footer')
         </div>
-
-        @include('partials.footer')
-      </div>
     </div>
 
+    {{-- Scripts --}}
     @include('partials.scripts')
-  </body>
+</body>
 </html>

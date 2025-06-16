@@ -64,13 +64,17 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6">
-                            <div class="form-group">
-                                <label for="tahun_ajaran">Tahun Ajaran</label>
-                                <input type="text" class="form-control" id="tahun_ajaran" name="tahun_ajaran"
-                                    placeholder="Contoh: 2023/2024"
-                                    value="{{ old('tahun_ajaran', $siswa->tahun_ajaran) }}"
-                                    required>
-                                @error('tahun_ajaran')
+                             <div class="form-group">
+                                <label for="jurusan">Jurusan</label>
+                                <select class="form-control" id="jurusan" name="jurusan" required>
+                                    <option value="">-- Pilih Jurusan --</option>
+                                    <option value="Multimedia" {{ old('jurusan') == 'Multimedia' ? 'selected' : '' }}>Multimedia</option>
+                                    <option value="Arsitektur" {{ old('jurusan') == 'Arsitektur' ? 'selected' : '' }}>Arsitektur</option>
+                                    <option value="Mesin" {{ old('jurusan') == 'Mesin' ? 'selected' : '' }}>Mesin</option>
+                                    <option value="Pengelasan" {{ old('jurusan') == 'Mesin' ? 'selected' : '' }}>Pengelasan</option>
+                                    <option value="Listrik" {{ old('jurusan') == 'Mesin' ? 'selected' : '' }}>Listrik</option>
+                                </select>
+                                @error('kelas')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>

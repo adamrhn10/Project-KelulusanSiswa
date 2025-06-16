@@ -27,12 +27,7 @@ class SiswaController extends Controller
                 'nisn' => ['required', 'string', 'min:5', 'max:20', 'unique:siswa'],
                 'nama_siswa' => ['required', 'string', 'min:1', 'max:255'],
                 'kelas' => ['required', 'string', 'max:10'],
-                'tahun_ajaran' => [
-                    'required',
-                    'string',
-                    'max:10',
-                    new YearAcademicFormat,
-                ],
+                'jurusan' => ['required'],
             ],
             [
                 'required' => 'Inputan :attribute wajib diisi.',
@@ -51,7 +46,7 @@ class SiswaController extends Controller
             'nisn' => $request->input("nisn"),
             'nama_siswa' => $request->input("nama_siswa"),
             'kelas' => $request->input("kelas"),
-            'tahun_ajaran' => $request->input("tahun_ajaran"),
+            'jurusan' => $request->input("jurusan"),
             'created_at' => $now,
             'updated_at' => $now
         ]);
@@ -61,7 +56,7 @@ class SiswaController extends Controller
 
     public function edit($id)
     {
-        $siswa = DB::table('siswa')->where('id', $id)->first(); 
+        $siswa = DB::table('siswa')->where('id', $id)->first();
         if (!$siswa) {
             abort(404);
         }
@@ -81,12 +76,7 @@ class SiswaController extends Controller
                 ],
                 'nama_siswa' => ['required', 'string', 'min:1', 'max:255'],
                 'kelas' => ['required', 'string', 'max:10'],
-                'tahun_ajaran' => [
-                    'required',
-                    'string',
-                    'max:10',
-                    new YearAcademicFormat,
-                ],
+                'jurusan' => ['required'],
             ],
             [
                 'required' => 'Inputan :attribute wajib diisi.',
@@ -104,7 +94,7 @@ class SiswaController extends Controller
             'nisn' => $request->input("nisn"),
             'nama_siswa' => $request->input("nama_siswa"),
             'kelas' => $request->input("kelas"),
-            'tahun_ajaran' => $request->input("tahun_ajaran"),
+            'jurusan' => $request->input("jurusan"),
             'updated_at' => $now
         ]);
 

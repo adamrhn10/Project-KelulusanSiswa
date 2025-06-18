@@ -1,115 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    {{-- Head Include --}}
+  <head>
     @include('partials.head')
-
-    {{-- Sidebar Minimize Script --}}
     <script>
-        (function () {
-            if (localStorage.getItem('sidebar_minimized') === 'true') {
-                document.documentElement.classList.add('sidebar_minimize');
-            }
-        })();
+      // Apply the class as early as possible to prevent FOUC (Flash Of Unstyled Content)
+      (function() {
+        if (localStorage.getItem('sidebar_minimized') === 'true') {
+          document.documentElement.classList.add('sidebar_minimize'); // Or document.body.classList.add('sidebar_minimize');
+        }
+      })();
     </script>
-
-    {{-- Table Dark Sidebar Styling --}}
-    <style>
-        .table-dark-sidebar thead {
-            background-color: #1B1B3A !important;
-            color: #ffffff;
-        }
-
-        .table-dark-sidebar tbody tr {
-            background-color: #2A2A4A;
-            color: #ffffff;
-        }
-
-        .table-dark-sidebar tbody tr:nth-child(even) {
-            background-color: #33335A;
-        }
-
-        .table-dark-sidebar td,
-        .table-dark-sidebar th,
-        table.dataTable tbody tr {
-            border-color: #444;
-            background-color: #2A2A4A !important;
-        }
-
-        table.dataTable thead th {
-            background-color: #1B1B3A !important;
-            color: white;
-        }
-    </style>
-</head>
-
-<body>
+  </head>
+  <body>
     <div class="wrapper">
-        {{-- Sidebar --}}
-        @include('partials.sidebar')
+      @include('partials.sidebar')
 
-        <div class="main-panel">
-            {{-- Navbar --}}
-            @include('partials.navbar')
+      <div class="main-panel">
+        @include('partials.navbar')
 
-            {{-- Page Content --}}
-            <div class="container">
-                <div class="page-inner">
-                    {{-- Page Header --}}
-                    <div class="page-header">
-                        <h4 class="page-title">@yield('title', 'Page')</h4>
+        <div class="container">
+          <div class="page-inner">
+            <div class="page-header">
+              {{-- Judul Halaman (akan diisi dari @yield('title') di child view) --}}
+              <h4 class="page-title">@yield('title', 'Page')</h4>
+            
+              {{-- Bagian Breadcrumbs --}}
+              @unless (request()->routeIs('dashboard')) {{-- Breadcrumbs tidak ditampilkan di halaman dashboard --}}
+                <ul class="breadcrumbs">
+                  <li class="nav-home">
+                    <a href="{{ route('dashboard') }}"><i class="icon-home"></i></a> {{-- Link Home ke Dashboard --}}
+                  </li>
+                  
+                  <?php
+                    // Ambil objek rute saat ini
+                    $currentRoute = request()->route();
+                    $currentRouteName = $currentRoute ? $currentRoute->getName() : null; // Pastikan rute ada
 
-                        {{-- Breadcrumb (kecuali di dashboard) --}}
-                        @unless (request()->routeIs('dashboard'))
-                            <ul class="breadcrumbs">
-                                <li class="nav-home">
-                                    <a href="{{ route('dashboard') }}">
-                                        <i class="icon-home"></i>
-                                    </a>
-                                </li>
-                                <li class="separator">
-                                    <i class="icon-arrow-right"></i>
-                                </li>
+                    $moduleData = null;
+                    $modules = [
+                        'siswa' => ['title' => 'Data Siswa', 'route' => 'siswa.index'],
+                        'nilai' => ['title' => 'Data Penilaian', 'route' => 'nilai.index'],
+                        'prediksi' => ['title' => 'Data Perhitungan', 'route' => 'prediksi.index'],
+                        'hasil' => ['title' => 'Hasil Prediksi', 'route' => 'hasil.index'],
+                        // Tambahkan modul lain di sini jika ada (users, profile, settings, etc.)
+                        'users' => ['title' => 'Manajemen User', 'route' => 'users.index'],
+                        'profile' => ['title' => 'Data Profile', 'route' => 'profile.show'], // Pastikan route profile.show ada dan menerima Auth::id()
+                    ];
 
-                                @php
-                                    $route = request()->route()->getName();
-                                    $modules = [
-                                        'siswa' => ['title' => 'Data Siswa', 'route' => 'siswa.index'],
-                                        'nilai' => ['title' => 'Data Nilai', 'route' => 'nilai.index'],
-                                        'hasil' => ['title' => 'Hasil Prediksi', 'route' => 'hasil.index'],
-                                    ];
-                                    $module = collect($modules)->first(function($_, $key) use ($route) {
-                                        return \Illuminate\Support\Str::startsWith($route, $key);
-                                    });
-                                @endphp
+                    foreach ($modules as $key => $data) {
+                        if (\Illuminate\Support\Str::startsWith($currentRouteName, $key)) {
+                            $moduleData = $data;
+                            break;
+                        }
+                    }
 
-                                @if ($module)
-                                    <li class="nav-item">
-                                        <a href="{{ route($module['route']) }}">{{ $module['title'] }}</a>
-                                    </li>
-                                    <li class="separator">
-                                        <i class="icon-arrow-right"></i>
-                                    </li>
-                                @endif
+                    $isModuleIndexPage = ($moduleData && $currentRouteName === $moduleData['route']);
+                    $currentTitle = trim(View::yieldContent('title', 'Page')); // Ambil judul yang di-yield
+                  ?>
 
-                                <li class="nav-item">
-                                    @yield('title', 'Page')
-                                </li>
-                            </ul>
-                        @endunless
-                    </div>
+                  @if ($moduleData)
+                    <li class="separator"><i class="icon-arrow-right"></i></li>
+                    <li class="nav-item">
+                        @if (!$isModuleIndexPage)
+                            {{-- Jika bukan halaman indeks modul, buat link ke indeks modul --}}
+                            <a href="{{ route($moduleData['route']) }}">{{ $moduleData['title'] }}</a>
+                        @else
+                            {{-- Jika ini halaman indeks modul, tampilkan teks saja (tidak perlu link balik ke dirinya sendiri) --}}
+                            {{ $moduleData['title'] }}
+                        @endif
+                    </li>
+                  @endif
 
-                    {{-- Main Content --}}
-                    @yield('content')
-                </div>
-            </div>
-
-            {{-- Footer --}}
-            @include('partials.footer')
+                  {{-- Item breadcrumb terakhir: Judul halaman saat ini --}}
+                  {{-- Tampilkan hanya jika ini bukan halaman indeks modul, dan judul modul berbeda dengan judul halaman saat ini --}}
+                  @if (!$isModuleIndexPage && ($moduleData ? $currentTitle !== $moduleData['title'] : true))
+                    <li class="separator"><i class="icon-arrow-right"></i></li>
+                    <li class="nav-item">
+                        {{ $currentTitle }} {{-- Ini bukan tautan, hanya teks biasa --}}
+                    </li>
+                  @endif
+                </ul>
+              @endunless
+            </div>            
+            @yield('content')
+          </div>
         </div>
+
+        @include('partials.footer')
+      </div>
     </div>
 
-    {{-- Scripts --}}
     @include('partials.scripts')
-</body>
+  </body>
 </html>

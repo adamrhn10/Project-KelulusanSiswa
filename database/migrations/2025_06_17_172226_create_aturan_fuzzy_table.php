@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::create('aturan_fuzzy', function (Blueprint $table) {
             $table->id();
-            $table->text('kondisi');     // IF bagian
-            $table->string('kesimpulan'); // THEN bagian, misalnya 'Lulus'
+            $table->string('rapor1');
+            $table->string('rapor2');
+            $table->string('rapor3');
+            $table->string('rapor4');
+            $table->string('rapor5');
+            $table->string('output');
             $table->timestamps();
         });
     }

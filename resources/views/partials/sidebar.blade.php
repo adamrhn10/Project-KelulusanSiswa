@@ -42,30 +42,38 @@
                         <p>Data Siswa</p>
                     </a>
                 </li>
-                {{-- Data Penilaian --}}
-                <li class="nav-item mb-3 {{ request()->routeIs('nilai.*') ? 'active' : '' }}"> {{-- Tambah mb-2 --}}
-                    <a href="{{ route('nilai.index') }}">
-                        <i class="fas fa-pencil-alt"></i>
-                        <p>Data Penilaian</p>
+                {{-- Data Kriteria --}}
+                <li class="nav-item mb-3 {{ request()->routeIs('kriteria.*') ? 'active' : '' }}"> {{-- Tambah mb-2 --}}
+                    <a href="{{ route('kriteria.index') }}">
+                        <i class="fas fa-box"></i>
+                        <p>Data Kriteria</p>
+                    </a>
+                </li>
+                {{-- Data Sub Kriteria --}}
+                <li class="nav-item mb-3 {{ request()->routeIs('subkriteria.*') ? 'active' : '' }}"> {{-- Tambah mb-2 --}}
+                    <a href="{{ route('subkriteria.index') }}">
+                        <i class="fas fa-boxes"></i>
+                        <p>Data Sub Kriteria</p>
                     </a>
                 </li>
                 {{-- Aturan Fuzzy --}}
-                <li class="nav-item mb-3 {{ request()->routeIs('rules.*') ? 'active' : '' }}"> {{-- Tambah mb-2 --}}
-                    <a href="{{ route('rules.index') }}">
+                <li class="nav-item mb-3 {{ request()->routeIs('aturan.*') ? 'active' : '' }} "> {{-- Tambah mb-2 --}}
+                    <a href="{{ route('aturan.index')}}">
                     <i class="fas fa-sliders-h"></i>
                         <p>Aturan Fuzzy</p>
                     </a>
                 </li>
-                {{-- Data Perhitungan (Prediksi Kelulusan) --}}
-                <li class="nav-item mb-3 {{ request()->routeIs('prediksi.*') ? 'active' : '' }}"> {{-- Tambah mb-2 --}}
-                    <a href="{{ route('prediksi.index') }}">
-                        <i class="fas fa-calculator"></i>
-                        <p>Data Perhitungan</p>
+                {{-- Data Penilaian --}}
+                <li class="nav-item mb-3 {{request()->routeIs('nilai.*') ? 'active' : ''}} "> {{-- Tambah mb-2 --}}
+                    <a href=" {{ route('nilai.index')}}">
+                        <i class="fas fa-pencil-alt"></i>
+                        <p>Data Penilaian</p>
                     </a>
                 </li>
+
                 {{-- Hasil Prediksi --}}
-                <li class="nav-item mb-3 {{ request()->routeIs('hasil.*') ? 'active' : '' }}"> {{-- Tambah mb-2 --}}
-                    <a href="{{ route('hasil.index') }}">
+                <li class="nav-item mb-3 {{request()->routeIs('prediksi.*') ? 'active' : ''}}"> {{-- Tambah mb-2 --}}
+                    <a href="{{ route('prediksi.index')}}">
                         <i class="fas fa-chart-bar"></i>
                         <p>Hasil Prediksi</p>
                     </a>

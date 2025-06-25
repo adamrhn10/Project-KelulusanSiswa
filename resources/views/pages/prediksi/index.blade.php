@@ -1,70 +1,66 @@
 @extends('layouts.master')
 
-@section('title', 'Data Perhitungan ')
+@section('title', 'Hasil Prediksi')
 
 @section('content')
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h4 class="card-title mb-0">Prediksi Kelulusan Siswa SMK</h4>
-        <form action="{{ route('prediksi.proses') }}" method="POST" onsubmit="return confirm('Lakukan prediksi untuk semua siswa?')">
-            @csrf
-            <button type="submit" class="btn btn-success">
-                <i class="fas fa-calculator"></i> Prediksi
-            </button>
-        </form>
-    </div>
+<div class="row">
+    <div class="col-md-12">
 
-    <div class="card-body">
-        {{-- Alert Sukses --}}
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show">
+                {{ session('error') }}
+                <button class="btn-close" data-bs-dismiss="alert"></button>
             </div>
-        @endif
+                @endif
 
-        <div class="table-responsive">
-            <table class="table table-hover text-center" id="prediksi-table">
-                <thead class="table-head-bg-black">
-                    <tr>
-                        <th>No</th>
-                        <th>NISN</th>
-                        <th>Rapor 1</th>
-                        <th>Rapor 2</th>
-                        <th>Rapor 3</th>
-                        <th>Rapor 4</th>
-                        <th>Rapor 5</th>
-                        <th>Nilai Fuzzy</th>
-                        <th>Hasil Prediksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($siswa as $item)
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Daftar Hasil Prediksi Kelulusan</h5>
+            </div>
+            <div class="card-body table-responsive">
+                <table id="data-prediksi" class="table table-head-bg-black table-hover table-bordered text-center align-middle">
+                    <thead>
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->nisn }}</td>
-                            @for ($i = 1; $i <= 5; $i++)
-                                <td>{{ $item->nilaiRapor?->{'rapor'.$i} ?? '-' }}</td>
-                            @endfor
-                            <td>{{ $item->hasilPrediksi->nilai_fuzzy ?? '-' }}</td>
-                            <td>
-                                @if ($item->hasilPrediksi)
-                                    <span class="badge bg-{{ $item->hasilPrediksi->hasil_prediksi === 'Lulus' ? 'success' : 'danger' }}">
-                                        {{ $item->hasilPrediksi->hasil_prediksi }}
+                            <th>No</th>
+                            <th>NISN</th>
+                            <th>Nama Siswa</th>
+                            <th>Kelas</th>
+                            <th>Jurusan</th>
+                            <th>Tahun Ajaran</th>
+                            <th>Nilai Fuzzy</th>
+                            <th>Hasil Prediksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($hasil as $h)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $h->siswa->nisn ?? '-' }}</td>
+                                <td>{{ $h->siswa->nama_siswa ?? '-' }}</td>
+                                <td>{{ $h->siswa->kelas ?? '-' }}</td>
+                                <td>{{ $h->siswa->jurusan ?? '-' }}</td>
+                                <td>{{ $h->siswa->tahun_ajaran ?? '-' }}</td>
+                                <td>{{ $h->nilai_fuzzy }}</td>
+                                <td>
+                                    <span class="badge 
+                                        @if($h->hasil_prediksi === 'Lulus') bg-success 
+                                        @elseif($h->hasil_prediksi === 'Tidak Lulus') bg-danger 
+                                        @else bg-warning text-dark 
+                                        @endif">
+                                        {{ $h->hasil_prediksi }}
                                     </span>
-                                @else
-                                    <span class="text-muted">Belum Diprediksi</span>
-                                @endif
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="9" class="text-center">Belum ada data siswa.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5">Belum ada hasil prediksi.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
+
     </div>
 </div>
 @endsection
@@ -72,11 +68,19 @@
 @push('scripts')
 <script>
     $(document).ready(function () {
-        $('#prediksi-table').DataTable({
+        $('#data-prediksi').DataTable({
+            responsive: true,
             pageLength: 10,
             ordering: true,
-            info: true,
-            paging: true
+            info: false,
+            language: {
+                search: "Cari:",
+                zeroRecords: "Data tidak ditemukan",
+                paginate: {
+                    previous: "Sebelumnya",
+                    next: "Berikutnya"
+                }
+            }
         });
     });
 </script>

@@ -24,23 +24,6 @@
 <link rel="stylesheet" href="{{asset('template/assets/css/kaiadmin.min.css') }}">
 
 <style>
-    .dataTable thead { /* Mengubah selektor dari #nilai-table menjadi .dataTable */
-        background-color: #1a2035 !important; /* Warna dari .table-head-bg-black */
-        color: #ffffff !important;           /* Warna teks putih */
-    }
-
-    .dataTable thead th { /* Mengubah selektor dari #nilai-table menjadi .dataTable */
-        background-color: #1a2035 !important; /* Warna dari .table-head-bg-black */
-        color: #ffffff !important;           /* Warna teks putih */
-        /* Anda mungkin perlu menyesuaikan padding jika !important ini menyebabkan masalah */
-        /* padding: 12px 24px !important; */ 
-    }
-
-    .dataTable thead .sorting_asc:after, /* Mengubah selektor dari #nilai-table menjadi .dataTable */
-    .dataTable thead .sorting_desc:before { /* Mengubah selektor dari #nilai-table menjadi .dataTable */
-        color: #ffffff !important; /* Pastikan ikon sorting juga putih */
-    }
-
     .dashboard-card {
         transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         cursor: pointer; /* Indicate clickability */

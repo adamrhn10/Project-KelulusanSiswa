@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('nilai_rapor', function (Blueprint $table) {
+        Schema::create('hasil_prediksi', function (Blueprint $table) {
             $table->id();
             $table->foreignId('siswa_id')->constrained('siswa')->onDelete('cascade');
-            $table->float('rapor1');
-            $table->float('rapor2');
-            $table->float('rapor3');
-            $table->float('rapor4');
-            $table->float('rapor5');
+            $table->double('nilai_fuzzy');
+            $table->string('hasil_prediksi', 50);
+            $table->date('tanggal_prediksi');
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('nilai_rapor');
+        Schema::dropIfExists('hasil_prediksi');
     }
 };

@@ -3,28 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Siswa extends Model
 {
-    use HasFactory;
-
     protected $table = 'siswa';
 
-    protected $fillable = [
-        'nisn',
-        'nama',
-        'kelas',
-        'jurusan',
-    ];
+    protected $fillable = ['nisn', 'nama_siswa', 'kelas', 'jurusan', 'tahun_ajaran'];
 
-    public function nilaiRapor()
+    public function nilaiSiswa()
     {
-        return $this->hasOne(NilaiRapor::class, 'siswa_id');
+        return $this->hasMany(NilaiSiswa::class);
     }
 
-      public function hasilPrediksi()
+    public function hasilPrediksi()
     {
-        return $this->hasOne(HasilPrediksi::class, 'siswa_id');
+        return $this->hasOne(HasilPrediksi::class);
     }
 }

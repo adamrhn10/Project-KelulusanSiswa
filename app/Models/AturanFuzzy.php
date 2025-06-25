@@ -6,9 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class AturanFuzzy extends Model
 {
-     protected $table = 'aturan_fuzzy';
+    protected $table = 'aturan_fuzzy';
+
+    protected $fillable = ['output'];
+
+    public function detail()
+    {
+        return $this->hasMany(AturanDetail::class, 'aturan_id');
+    }
     
-    protected $fillable = [
-        'rapor1', 'rapor2', 'rapor3', 'rapor4', 'rapor5', 'output'
-    ];
+    public function details()
+    {
+        return $this->detail(); // agar bisa dipanggil dengan ->details juga
+    }
 }

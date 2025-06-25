@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('siswa', function (Blueprint $table) {
+        Schema::create('sub_kriteria', function (Blueprint $table) {
             $table->id();
-            $table->integer('nisn');
-            $table->string('nama_siswa');
-            $table->string('kelas');
-            $table->string('tahun_ajaran');
+            $table->foreignId('kriteria_id')->constrained('kriteria')->onDelete('cascade');
+            $table->string('kategori', 20); // Rendah, Sedang, Tinggi
+            $table->double('titik_a');
+            $table->double('titik_b');
+            $table->double('titik_c');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('siswa');
+        Schema::dropIfExists('sub_kriteria');
     }
 };

@@ -39,12 +39,7 @@
                     $moduleData = null;
                     $modules = [
                         'siswa' => ['title' => 'Data Siswa', 'route' => 'siswa.index'],
-                        'nilai' => ['title' => 'Data Penilaian', 'route' => 'nilai.index'],
-                        'prediksi' => ['title' => 'Data Perhitungan', 'route' => 'prediksi.index'],
-                        'hasil' => ['title' => 'Hasil Prediksi', 'route' => 'hasil.index'],
-                        // Tambahkan modul lain di sini jika ada (users, profile, settings, etc.)
-                        'users' => ['title' => 'Manajemen User', 'route' => 'users.index'],
-                        'profile' => ['title' => 'Data Profile', 'route' => 'profile.show'], // Pastikan route profile.show ada dan menerima Auth::id()
+                        'kriteria' => ['title' => 'Data Kriteria', 'route' => 'kriteria.index'],
                     ];
 
                     foreach ($modules as $key => $data) {

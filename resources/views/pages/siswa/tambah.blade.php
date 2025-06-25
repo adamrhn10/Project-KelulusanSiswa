@@ -16,25 +16,31 @@
             <div class="card-body">
                 <form action="{{ route('siswa.store') }}" method="POST" autocomplete="off">
                     @csrf
+
+                    {{-- Baris 1 --}}
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="nisn" class="form-label">NISN</label>
-                            <input type="text" class="form-control" id="nisn" name="nisn" value="{{ old('nisn') }}" placeholder="Masukkan NISN" required>
+                            <input type="text" class="form-control" id="nisn" name="nisn"
+                                value="{{ old('nisn') }}" placeholder="Masukkan NISN" required>
                             @error('nisn')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+
                         <div class="col-md-6">
                             <label for="nama_siswa" class="form-label">Nama Lengkap</label>
-                            <input type="text" class="form-control" id="nama_siswa" name="nama_siswa" value="{{ old('nama_siswa') }}" placeholder="Masukkan Nama Lengkap" required>
+                            <input type="text" class="form-control" id="nama_siswa" name="nama_siswa"
+                                value="{{ old('nama_siswa') }}" placeholder="Masukkan Nama Siswa" required>
                             @error('nama_siswa')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                     </div>
 
+                    {{-- Baris 2 --}}
                     <div class="row mb-3">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="kelas" class="form-label">Kelas</label>
                             <select class="form-select" id="kelas" name="kelas" required>
                                 <option value="">-- Pilih Kelas --</option>
@@ -47,7 +53,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="jurusan" class="form-label">Jurusan</label>
                             <select class="form-select" id="jurusan" name="jurusan" required>
                                 <option value="">-- Pilih Jurusan --</option>
@@ -62,13 +68,23 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+
+                        <div class="col-md-4">
+                            <label for="tahun_ajaran" class="form-label">Tahun Ajaran</label>
+                            <input type="text" class="form-control" id="tahun_ajaran" name="tahun_ajaran"
+                                value="{{ old('tahun_ajaran') }}" placeholder="Contoh: 2024/2025" required>
+                            @error('tahun_ajaran')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
                     </div>
 
+                    {{-- Tombol --}}
                     <div class="text-end">
-                        <button type="submit" class="btn btn-success">
+                        <button type="submit" class="btn btn-success btn-sm me-1">
                             <i class="fa fa-save"></i> Simpan
                         </button>
-                        <button type="reset" class="btn btn-danger">
+                        <button type="reset" class="btn btn-danger btn-sm">
                             <i class="fas fa-redo"></i> Reset
                         </button>
                     </div>

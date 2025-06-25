@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('aturan_fuzzy', function (Blueprint $table) {
+        Schema::create('siswa', function (Blueprint $table) {
             $table->id();
-            $table->string('rapor1');
-            $table->string('rapor2');
-            $table->string('rapor3');
-            $table->string('rapor4');
-            $table->string('rapor5');
-            $table->string('output');
+            $table->string('nisn')->unique();
+            $table->string('nama_siswa');
+            $table->string('kelas', 10);
+            $table->string('jurusan', 50);
+            $table->string('tahun_ajaran', 10);
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('aturan_fuzzy');
+        Schema::dropIfExists('siswa');
     }
 };

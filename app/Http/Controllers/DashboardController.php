@@ -4,19 +4,26 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Siswa;
-use App\Models\NilaiRapor;
 use App\Models\HasilPrediksi;
-use App\Models\AturanFuzzy;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $totalSiswa = Siswa::count();
-        $totalPenilaian = NilaiRapor::count();
-        $totalHasil = HasilPrediksi::count();
-        $totalFuzzy = AturanFuzzy::count();
+        // Ambil prediksi terbaru
+        $prediksiTerbaru = HasilPrediksi::with('siswa')
+            ->latest('tanggal_prediksi')
+            ->take(5)
+            ->get();
 
-        return view('pages.dashboard', compact('totalSiswa', 'totalPenilaian', 'totalHasil', 'totalFuzzy'));
+        // Kirim semua data ke view
+        return view('pages.dashboard', [
+            'prediksiTerbaru' => $prediksiTerbaru,
+            'totalSiswa' => Siswa::count(),
+            'totalPrediksi' => HasilPrediksi::count(),
+            'jumlahLulus' => HasilPrediksi::where('hasil_prediksi', 'Lulus')->count(),
+            'jumlahDipertimbangkan' => HasilPrediksi::where('hasil_prediksi', 'Dipertimbangkan')->count(),
+            'jumlahTidakLulus' => HasilPrediksi::where('hasil_prediksi', 'Tidak Lulus')->count(),
+        ]);
     }
 }

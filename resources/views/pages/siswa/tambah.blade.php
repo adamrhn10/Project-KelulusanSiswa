@@ -58,7 +58,7 @@
                             <select class="form-select" id="jurusan" name="jurusan" required>
                                 <option value="">-- Pilih Jurusan --</option>
                                 @php
-                                    $jurusanList = ['Multimedia', 'Arsitektur', 'Mesin', 'Pengelasan', 'Listrik'];
+                                    $jurusanList = ['DKV', 'DPIB', 'Teknik Mesin', 'Teknik Pengelasan', 'Teknik Listrik'];
                                 @endphp
                                 @foreach ($jurusanList as $jurusan)
                                     <option value="{{ $jurusan }}" {{ old('jurusan') == $jurusan ? 'selected' : '' }}>{{ $jurusan }}</option>

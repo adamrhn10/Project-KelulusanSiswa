@@ -3,10 +3,9 @@
   <head>
     @include('partials.head')
     <script>
-      // Apply the class as early as possible to prevent FOUC (Flash Of Unstyled Content)
       (function() {
         if (localStorage.getItem('sidebar_minimized') === 'true') {
-          document.documentElement.classList.add('sidebar_minimize'); // Or document.body.classList.add('sidebar_minimize');
+          document.documentElement.classList.add('sidebar_minimize');
         }
       })();
     </script>
@@ -21,7 +20,6 @@
         <div class="container">
           <div class="page-inner">
             <div class="page-header">
-              {{-- Judul Halaman (akan diisi dari @yield('title') di child view) --}}
               <h4 class="page-title">@yield('title', 'Page')</h4>
             
               {{-- Bagian Breadcrumbs --}}

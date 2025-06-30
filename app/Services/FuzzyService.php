@@ -14,14 +14,14 @@ class FuzzyService
         $nilaiSiswa = NilaiSiswa::where('siswa_id', $siswa_id)->get()->keyBy('kriteria_id');
         $kriteria = Kriteria::all();
 
-        // ✅ Fuzzifikasi
+        // Fuzzifikasi
         $fuzzyInputs = [];
         foreach ($kriteria as $krit) {
             $nilai = $nilaiSiswa[$krit->id]->nilai ?? 0;
             $fuzzyInputs[$krit->id] = $this->fuzzifikasi($krit->id, $nilai);
         }
 
-        // ✅ Inferensi
+        //  Inferensi
         $aturan = AturanFuzzy::with('details')->get();
         $outputList = [];
 
@@ -42,7 +42,7 @@ class FuzzyService
             }
         }
 
-        // ✅ Jika tidak ada aturan yang cocok
+        // Jika tidak ada aturan yang cocok
         if (empty($outputList)) {
             return [
                 'output' => 'Tidak Diketahui',
@@ -50,7 +50,7 @@ class FuzzyService
             ];
         }
 
-        // ✅ Defuzzifikasi: Center of Gravity (CoG)
+        // Defuzzifikasi: Center of Gravity (CoG)
         $numerator = 0;
         $denominator = 0;
         foreach ($outputList as $out) {
@@ -68,7 +68,7 @@ class FuzzyService
     }
 
     /**
-     * ✅ Fuzzifikasi: derajat keanggotaan berdasarkan nilai & domain
+     * Fuzzifikasi: derajat keanggotaan berdasarkan nilai & domain
      */
     private function fuzzifikasi($kriteria_id, $nilai): array
     {
@@ -101,7 +101,7 @@ class FuzzyService
     }
 
     /**
-     * ✅ Representasi crisp dari output fuzzy (dinamis berdasarkan kode kriteria output)
+     * Representasi crisp dari output fuzzy (dinamis berdasarkan kode kriteria output)
      */
     private function getOutputZ(string $kategori, string $outputKode = 'OUT'): float
     {
@@ -118,7 +118,7 @@ class FuzzyService
     }
 
     /**
-     * ✅ Klasifikasi nilai defuzzifikasi ke output linguistik (dinamis)
+     * Klasifikasi nilai defuzzifikasi ke output linguistik (dinamis)
      */
     private function klasifikasiOutput(float $z, string $outputKode = 'OUT'): string
     {

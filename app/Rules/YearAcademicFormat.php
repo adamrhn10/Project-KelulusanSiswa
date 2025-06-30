@@ -14,7 +14,7 @@ class YearAcademicFormat implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        // Pertama, pastikan format umum YYYY/YYYY dengan regex
+        //  format umum YYYY/YYYY dengan regex
         if (!preg_match('/^\d{4}\/\d{4}$/', $value)) {
             $fail('Format :attribute tidak valid. Gunakan format YYYY/YYYY (Contoh: 2023/2024 atau 2019/2021).');
             return;
@@ -24,13 +24,13 @@ class YearAcademicFormat implements ValidationRule
         $year1 = (int) $parts[0];
         $year2 = (int) $parts[1];
 
-        // *** LOGIKA YANG DIUBAH: Pastikan tahun kedua lebih besar dari tahun pertama ***
+        // *** Pastikan tahun kedua lebih besar dari tahun pertama ***
         if ($year2 <= $year1) {
             $fail('Tahun kedua di :attribute harus lebih besar dari tahun pertama.');
             return;
         }
 
-        // Opsional: Batasi rentang tahun yang masuk akal
+        //  Batasi rentang tahun yang masuk akal
         $currentYear = (int) date('Y');
         // Misalnya, tahun awal tidak terlalu lampau (contoh: 20 tahun ke belakang)
         // Dan tahun kedua tidak terlalu jauh di masa depan (contoh: 5 tahun ke depan dari tahun sekarang)
@@ -39,7 +39,7 @@ class YearAcademicFormat implements ValidationRule
             return;
         }
 
-        // Opsional: Batasi maksimum rentang tahun (misalnya tidak boleh lebih dari 3 tahun)
+        // Batasi maksimum rentang tahun (misalnya tidak boleh lebih dari 3 tahun)
         if (($year2 - $year1) > 3) {
             $fail('Rentang tahun ajaran di :attribute tidak boleh lebih dari 3 tahun.');
             return;

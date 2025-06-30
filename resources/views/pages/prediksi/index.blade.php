@@ -14,9 +14,15 @@
                 @endif
 
         <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">Daftar Hasil Prediksi Kelulusan</h5>
+        
+
+             <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="card-title mb-0">Daftar Hasil Prediksi Kelulusan</h4>
+                <a href="{{ route('prediksi.pdf') }}" class="btn btn-danger btn-round " target="_blank">
+                    <i class="fa fa-file-pdf"></i> Cetak PDF
+                </a>
             </div>
+
             <div class="card-body table-responsive">
                 <table id="data-prediksi" class="table table-head-bg-black table-hover table-bordered text-center align-middle">
                     <thead>

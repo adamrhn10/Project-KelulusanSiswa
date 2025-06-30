@@ -15,7 +15,7 @@ class NilaiSiswaController extends Controller
     {
         $siswa = Siswa::where('kelas', 'XII')->with('nilaisiswa')->get();
 
-        // ✅ Hanya ambil kriteria input (bukan output)
+        //  Hanya ambil kriteria input (bukan output)
         $kriteria = Kriteria::where('kode', '!=', 'OUT')->get();
 
         return view('pages.nilai.index', compact('siswa', 'kriteria'));
@@ -25,7 +25,7 @@ class NilaiSiswaController extends Controller
     {
         $siswa = Siswa::findOrFail($siswa_id);
 
-        // ✅ Hanya ambil kriteria input
+        //  Hanya ambil kriteria input
         $kriteria = Kriteria::where('kode', '!=', 'OUT')->get();
         $nilai = NilaiSiswa::where('siswa_id', $siswa_id)->get()->keyBy('kriteria_id');
 
@@ -36,7 +36,7 @@ class NilaiSiswaController extends Controller
     {
         $siswa = Siswa::findOrFail($siswa_id);
 
-        // ✅ Hanya ambil kriteria input
+        // Hanya ambil kriteria input
         $kriteriaList = Kriteria::where('kode', '!=', 'OUT')->get();
 
         if ($siswa->kelas !== 'XII') {
@@ -59,7 +59,7 @@ class NilaiSiswaController extends Controller
             }
         }
 
-        // ✅ Validasi domain fuzzy tersedia
+        // Validasi domain fuzzy tersedia
         $incomplete = false;
         foreach ($kriteriaList as $kriteria) {
             if ($kriteria->subKriteria()->count() < 1) {
@@ -72,7 +72,7 @@ class NilaiSiswaController extends Controller
             return redirect()->route('nilai.index')->with('error', 'Gagal memproses prediksi. Domain fuzzy belum lengkap untuk semua kriteria.');
         }
 
-        // ✅ Jalankan fuzzy inference
+        //  Jalankan fuzzy inference
         $hasil = app(FuzzyService::class)->prediksi($siswa_id);
 
         HasilPrediksi::updateOrCreate([

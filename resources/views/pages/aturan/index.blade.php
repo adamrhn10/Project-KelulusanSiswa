@@ -201,7 +201,6 @@
             }
         });
 
-        // Tangani filter per kriteria
         $('.filter-kolom').on('change', function () {
             $('.filter-kolom').each(function (index) {
                 const val = $(this).val();

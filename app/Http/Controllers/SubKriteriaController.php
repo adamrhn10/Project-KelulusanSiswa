@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Kriteria;
 use App\Models\SubKriteria;
+use Illuminate\Support\Facades\Log;
+
 
 class SubKriteriaController extends Controller
 {
@@ -20,19 +22,39 @@ class SubKriteriaController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $this->validateForm($request);
+{
+    $this->validateForm($request);
 
-        SubKriteria::create($request->only([
-            'kriteria_id', 'kategori', 'titik_a', 'titik_b', 'titik_c'
-        ]));
+    $jumlahKategori = SubKriteria::where('kriteria_id', $request->kriteria_id)->count();
 
+    if ($jumlahKategori >= 3) {
         return redirect()->route('subkriteria.index')
-                         ->with('success', 'Domain fuzzy berhasil ditambahkan.');
+                         ->withErrors(['Subkriteria tidak boleh lebih dari 3 kategori untuk setiap kriteria.']);
     }
 
-    public function update(Request $request, SubKriteria $subkriteria)
+    // Cegah kategori yang sama dimasukkan dua kali
+    $duplikat = SubKriteria::where('kriteria_id', $request->kriteria_id)
+                           ->where('kategori', $request->kategori)
+                           ->exists();
+
+    if ($duplikat) {
+        return redirect()->route('subkriteria.index')
+                         ->withErrors(['Kategori sudah ada untuk kriteria ini.']);
+    }
+
+    SubKriteria::create($request->only([
+        'kriteria_id', 'kategori', 'titik_a', 'titik_b', 'titik_c'
+    ]));
+
+    return redirect()->route('subkriteria.index')
+                     ->with('success', 'Domain fuzzy berhasil ditambahkan.');
+}
+
+
+    public function update(Request $request, $id)
     {
+        $subkriteria = SubKriteria::findOrFail($id);
+
         $this->validateForm($request);
 
         $subkriteria->update($request->only([
@@ -40,19 +62,23 @@ class SubKriteriaController extends Controller
         ]));
 
         return redirect()->route('subkriteria.index')
-                         ->with('success', 'Domain fuzzy berhasil diperbarui.');
+                        ->with('success', 'Domain fuzzy berhasil diperbarui.');
     }
 
-    public function destroy(SubKriteria $subkriteria)
+
+
+    public function destroy($id)
     {
+        $subkriteria = SubKriteria::findOrFail($id);
+
         $subkriteria->delete();
 
         return redirect()->route('subkriteria.index')
-                         ->with('success', 'Domain fuzzy berhasil dihapus.');
+                        ->with('success', 'Domain fuzzy berhasil dihapus.');
     }
 
     /**
-     * ✅ Validasi form input dengan kategori dinamis (input / output)
+     *  Validasi form input dengan kategori dinamis (input / output)
      */
     private function validateForm(Request $request)
     {

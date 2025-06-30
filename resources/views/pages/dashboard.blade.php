@@ -4,10 +4,8 @@
 
 @section('content')
 <div class="mb-4">
-    <h5 class="text-muted">Selamat datang kembali, ! Senang melihat Anda lagi di aplikasi prediksi kelulusan.</h5>
+    <h5 class="text-muted">Selamat datang kembali, {{ Auth::user()->name }}! Senang melihat Anda lagi di aplikasi prediksi kelulusan.</h5>
 </div>
-
-{{-- Statistik Ringkas --}}
 <div class="row">
     <div class="col-sm-6 col-md-3">
         <div class="card card-stats card-round">
@@ -90,9 +88,7 @@
     </div>
 </div>
 
-{{-- Grafik dan Ringkasan Prediksi dalam 1 baris --}}
 <div class="row mt-4">
-    {{-- Doughnut Chart --}}
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
@@ -105,8 +101,6 @@
             </div>
         </div>
     </div>
-
-    {{-- Tabel Prediksi Terbaru --}}
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">

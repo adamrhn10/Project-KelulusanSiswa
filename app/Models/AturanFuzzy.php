@@ -17,6 +17,6 @@ class AturanFuzzy extends Model
     
     public function details()
     {
-        return $this->detail(); // agar bisa dipanggil dengan ->details juga
+        return $this->detail(); 
     }
 }

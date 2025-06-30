@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Data Nilai Siswa')
+@section('title', 'Data Penilaian')
 
 @section('content')
 <div class="row">
@@ -23,7 +23,7 @@
 
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0">Daftar Nilai Siswa</h5>
+                <h5 class="mb-0">Daftar Data Siswa</h5>
             </div>
 
             <div class="card-body table-responsive">
